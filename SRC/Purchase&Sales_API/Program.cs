@@ -1,4 +1,6 @@
 
+using Purchase_Sales_Infrastructure.InfrastructureDIContainer;
+
 namespace Purchase_Sales_API
 {
     public class Program
@@ -14,6 +16,8 @@ namespace Purchase_Sales_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //AddInfrastructureServices
+            builder.Services.AddInfrastructureServices(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
