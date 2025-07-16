@@ -21,6 +21,7 @@ namespace Purchase_Sales_Infrastructure.Context
         {
             modelBuilder.Entity<Sale>().HasOne(s => s.Product).WithMany(p => p.sales).HasForeignKey(s => s.productId);
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<Product>().Property(p=>p.id).ValueGeneratedNever();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purchase_Sales_Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using Purchase_Sales_Infrastructure.Context;
 namespace Purchase_Sales_Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715140342_RemoveQuantity")]
+    partial class RemoveQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,8 +27,11 @@ namespace Purchase_Sales_Infrastructure.Migrations
 
             modelBuilder.Entity("Purchase_Sales_Domain.Models.Product", b =>
                 {
-                    b.Property<string>("productId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -37,7 +43,7 @@ namespace Purchase_Sales_Infrastructure.Migrations
                     b.Property<DateTime>("updatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("productId");
+                    b.HasKey("id");
 
                     b.ToTable("products");
                 });
@@ -53,9 +59,8 @@ namespace Purchase_Sales_Infrastructure.Migrations
                     b.Property<decimal>("price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("productId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
 
                     b.Property<int>("quantity")
                         .HasColumnType("int");

@@ -1,6 +1,6 @@
 
 using Purchase_Sales_Infrastructure.InfrastructureDIContainer;
-
+using Purchase_Sales_Core.CoreDIContainer;
 namespace Purchase_Sales_API
 {
     public class Program
@@ -18,6 +18,8 @@ namespace Purchase_Sales_API
 
             //AddInfrastructureServices
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            //AddCoreServices
+            builder.Services.AddCoreServices(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

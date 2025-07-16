@@ -16,10 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Purchase&amp;Sales_Core\Purchase&amp;Sales_Core.csproj" />
     <ProjectReference Include="..\Purchase&amp;Sales_Infrastructure\Purchase&amp;Sales_Infrastructure.csproj" />
   </ItemGroup>
 
