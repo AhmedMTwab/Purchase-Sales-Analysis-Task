@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
 
@@ -21,9 +22,9 @@ namespace Purchase_Sales_API.Controllers
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
             }
 
-            await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFile);
+            var addedProducts=await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFile);
 
-            return Created();
+            return Ok($"{addedProducts} Products added");
         }
     }
 }

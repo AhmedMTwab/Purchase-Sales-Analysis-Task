@@ -20,9 +20,9 @@ namespace Purchase_Sales_Infrastructure.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<List<Product>> GetAllProducts()
         {
-            var products=await db.products.ToListAsync();
+            var products=await db.products.AsNoTracking().ToListAsync();
             return products;
         }
 

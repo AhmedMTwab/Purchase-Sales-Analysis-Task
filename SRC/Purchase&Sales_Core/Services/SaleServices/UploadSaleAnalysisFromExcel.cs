@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Purchase_Sales_Core.DTOs.ProductDTO;
 using Purchase_Sales_Core.DTOs.SaleDTO;
+using Purchase_Sales_Core.Services.ProductServices;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
 using Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions;
+using Purchase_Sales_Domain.Models;
 
 namespace Purchase_Sales_Core.Services.SaleServices
 {
-    public class UploadSaleAnalysisFromExcel(ISaleAdder _saleAdder,IGetExistingProductByName _getExistingProductByName,IProductAdder _productAdder) : IUploadSaleAnalysisFromExcel
+    public class UploadSaleAnalysisFromExcel(ISaleAdder _saleAdder,IGetAllProducts _getAllProducts,IProductAdder _productAdder) : IUploadSaleAnalysisFromExcel
     {
         public async Task<int> UploadSaleData(IFormFile saleFile)
         {
@@ -24,6 +26,8 @@ namespace Purchase_Sales_Core.Services.SaleServices
                 ExcelWorksheet worksheet = excelpackage.Workbook.Worksheets[0];
                 int insertedSales = 0;
                 int numberOfRows = worksheet.Dimension.Rows;
+                List<Product> allProducts = await _getAllProducts.GetProductsAsync();
+                List<ProductAddDTO> addedProducts= new List<ProductAddDTO>();
                 for (int row = 2; row <= numberOfRows; row++)
                 {
                     SaleAddDTO rowSale = new SaleAddDTO();
@@ -31,7 +35,8 @@ namespace Purchase_Sales_Core.Services.SaleServices
                     if (!string.IsNullOrEmpty(cellValue))
                     {
                         string productName= worksheet.GetValue<string>(row, 11);
-                        var existedProduct=await _getExistingProductByName.GetProductByName(productName);
+                        //var existedProduct=await _getExistingProductByName.GetProductByName(productName);
+                        var existedProduct = allProducts.FirstOrDefault(p => p.name == productName);
                         if (existedProduct != null)
                         {
                             rowSale.productName = existedProduct.name; 
@@ -44,7 +49,11 @@ namespace Purchase_Sales_Core.Services.SaleServices
                                 purchasePrice = 0,
                                 updatedAt= DateTime.Now
                             };
-                            await _productAdder.AddProduct(UnExistedProduct);
+                            if (addedProducts.FirstOrDefault(p=>p.name == UnExistedProduct.name)==null)
+                            {
+                                await _productAdder.AddProduct(UnExistedProduct);
+                                addedProducts.Add(UnExistedProduct);
+                            }
                             rowSale.productName = UnExistedProduct.name;
                         }
                         rowSale.quantity = worksheet.GetValue<int>(row, 12);

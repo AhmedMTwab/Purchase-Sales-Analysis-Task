@@ -22,9 +22,9 @@ namespace Purchase_Sales_API.Controllers
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
             }
 
-            await _uploadSaleAnalysisFromExcel.UploadSaleData(salesFile);
+            var addedSales = await _uploadSaleAnalysisFromExcel.UploadSaleData(salesFile);
 
-            return Created();
+            return Ok($"{addedSales} Sales added");
         }
     }
 }
