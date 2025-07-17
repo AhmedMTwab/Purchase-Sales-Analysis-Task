@@ -25,8 +25,13 @@ namespace Purchase_Sales_Infrastructure.Repositories
             var products=await db.products.AsNoTracking().ToListAsync();
             return products;
         }
+        public async Task<List<Product>> GetAllProductsWithSales()
+        {
+            var products = await db.products.Include(p=>p.sales).ToListAsync();
+            return products;
+        }
 
-       
+
 
         public async Task<Product> GetProductByName(string Name)
         {

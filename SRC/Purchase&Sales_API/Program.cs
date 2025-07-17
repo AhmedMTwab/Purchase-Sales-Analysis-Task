@@ -23,13 +23,13 @@ namespace Purchase_Sales_API
             builder.Services.AddCoreServices(builder.Configuration);
             builder.WebHost.ConfigureKestrel(options =>
             {
-                options.Limits.MaxRequestBodySize = 500 * 1024 * 1024; 
+                options.Limits.MaxRequestBodySize = 300_000_000 ; 
             });
-            //builder.Services.Configure<FormOptions>(options =>
-            //{
-            //    options.ValueLengthLimit = int.MaxValue;
-            //    options.MultipartBodyLengthLimit = int.MaxValue;
-            //});
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = 300_000_000;
+                options.MultipartBodyLengthLimit = 300_000_000;
+            });
 
             var app = builder.Build();
 
