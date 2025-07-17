@@ -9,12 +9,12 @@ using Purchase_Sales_Domain.RepositoryAbstractions;
 
 namespace Purchase_Sales_Core.Services.ProductServices
 {
-    public class GetExistingProductById(IProductRepo _productRepo) : IGetExistingProductById
+    public class GetExistingProductByName(IProductRepo _productRepo) : IGetExistingProductByName
     {
-       public async Task<Product> GetProductById(string Name)
+        public Task<Product> GetProductByName(string productName)
         {
-            var foundProduct=await _productRepo.GetProductByName(Name);
-            return foundProduct;
+           var product= _productRepo.GetProductByName(productName);
+            return product;
         }
     }
 }

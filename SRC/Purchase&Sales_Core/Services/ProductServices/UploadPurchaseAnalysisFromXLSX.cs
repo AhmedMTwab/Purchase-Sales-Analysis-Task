@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Purchase_Sales_Core.DTOs.ProductDTO;
+using Purchase_Sales_Core.DTOs.SaleDTO;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
+using Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions;
 
 namespace Purchase_Sales_Core.Services.ProductServices
 {
-    public class UploadPurchaseAnalysisFromXLSX (IProductAdder _productAdder,IProductUpdater _productUpdater,IGetExistingProductById _getExistingProductById): IUploadPurchaseAnalysisFromExcel
+    public class UploadPurchaseAnalysisFromXLSX (IProductAdder _productAdder,IProductUpdater _productUpdater,IGetExistingProductByName _getExistingProductByName): IUploadPurchaseAnalysisFromExcel
     {
         public async Task<int> UploadPurchaseData(IFormFile purchaseFile)
         {
+
             MemoryStream stream = new MemoryStream();
             await purchaseFile.CopyToAsync(stream);
             ExcelPackage.License.SetNonCommercialPersonal("Eltwab");
@@ -26,23 +29,22 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 {
                     ProductAddDTO rowProduct = new ProductAddDTO();
                     string? cellValue = worksheet.GetValue(row, 18).ToString();
-                    if ( !string.IsNullOrEmpty(cellValue))
+                    if (!string.IsNullOrEmpty(cellValue))
                     {
                         int totalPurchase = worksheet.GetValue<int>(row, 5);
                         int totalQuantity = worksheet.GetValue<int>(row, 11);
-                        if (totalQuantity != 0)
+                        if (totalQuantity != 0 && totalPurchase !=0)
                             rowProduct.purchasePrice = totalPurchase / totalQuantity;
                         else
                             continue;
-                        rowProduct.id = worksheet.GetValue<string>(row, 18);
                         rowProduct.name = worksheet.GetValue<string>(row, 12);
                         rowProduct.updatedAt = DateTime.Now;
-                        var isExist =await  _getExistingProductById.GetProductById(rowProduct.id);
-                        if (isExist ==null)
+                        var isExist = await _getExistingProductByName.GetProductByName(rowProduct.name);
+                        if (isExist == null)
                             await _productAdder.AddProduct(rowProduct);
                         else
-                            await _productUpdater.UpdateProduct(rowProduct.id,rowProduct);
-                            insertedProducts++;
+                            await _productUpdater.UpdateProduct(rowProduct.name, rowProduct);
+                        insertedProducts++;
                     }
                 }
                 return insertedProducts;

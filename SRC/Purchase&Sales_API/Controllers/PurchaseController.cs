@@ -23,7 +23,7 @@ namespace Purchase_Sales_API.Controllers
 
             await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFile);
 
-            return null;
+            return Created();
         }
     }
 }

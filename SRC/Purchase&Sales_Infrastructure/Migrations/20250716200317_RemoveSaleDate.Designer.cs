@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Purchase_Sales_Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using Purchase_Sales_Infrastructure.Context;
 namespace Purchase_Sales_Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716200317_RemoveSaleDate")]
+    partial class RemoveSaleDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,8 +27,12 @@ namespace Purchase_Sales_Infrastructure.Migrations
 
             modelBuilder.Entity("Purchase_Sales_Domain.Models.Product", b =>
                 {
-                    b.Property<string>("name")
+                    b.Property<string>("productId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("purchasePrice")
                         .HasColumnType("decimal(18,2)");
@@ -33,7 +40,7 @@ namespace Purchase_Sales_Infrastructure.Migrations
                     b.Property<DateTime>("updatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("name");
+                    b.HasKey("productId");
 
                     b.ToTable("products");
                 });
@@ -49,7 +56,7 @@ namespace Purchase_Sales_Infrastructure.Migrations
                     b.Property<decimal>("price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("productName")
+                    b.Property<string>("productId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -58,7 +65,7 @@ namespace Purchase_Sales_Infrastructure.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("productName");
+                    b.HasIndex("productId");
 
                     b.ToTable("sales");
                 });
@@ -67,7 +74,7 @@ namespace Purchase_Sales_Infrastructure.Migrations
                 {
                     b.HasOne("Purchase_Sales_Domain.Models.Product", "Product")
                         .WithMany("sales")
-                        .HasForeignKey("productName")
+                        .HasForeignKey("productId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

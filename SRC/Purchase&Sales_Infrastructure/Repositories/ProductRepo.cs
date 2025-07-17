@@ -15,7 +15,7 @@ namespace Purchase_Sales_Infrastructure.Repositories
         
         public async Task<bool> AddProduct(Product product)
         {
-            await db.AddAsync(product);
+            await db.products.AddAsync(product);
             await db.SaveChangesAsync();
             return true;
         }
@@ -26,15 +26,17 @@ namespace Purchase_Sales_Infrastructure.Repositories
             return products;
         }
 
-        public async Task<Product> GetProductById(string id)
+       
+
+        public async Task<Product> GetProductByName(string Name)
         {
-            var product =await  db.products.FirstOrDefaultAsync(p=>p.productId==id);
+            var product = await db.products.FirstOrDefaultAsync(p => p.name == Name);
             return product;
         }
 
-        public async Task<bool> UpdateProduct(string productId,Product product)
+        public async Task<bool> UpdateProduct(string productName,Product product)
         {
-            var existedProduct = await GetProductById(productId);
+            var existedProduct = await GetProductByName(productName);
             existedProduct.purchasePrice = product.purchasePrice;
             existedProduct.updatedAt = product.updatedAt;
             await db.SaveChangesAsync();

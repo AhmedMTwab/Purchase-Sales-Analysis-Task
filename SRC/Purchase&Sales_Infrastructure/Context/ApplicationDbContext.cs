@@ -19,9 +19,9 @@ namespace Purchase_Sales_Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Sale>().HasOne(s => s.Product).WithMany(p => p.sales).HasForeignKey(s => s.productId);
+            modelBuilder.Entity<Sale>().HasOne(s => s.Product).WithMany(p => p.sales).HasForeignKey(s =>  s.productName );
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Product>().Property(p=>p.id).ValueGeneratedNever();
+            modelBuilder.Entity<Product>().HasKey(p => p.name);
         }
     }
 }

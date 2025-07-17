@@ -10,7 +10,8 @@ namespace Purchase_Sales_Domain.RepositoryAbstractions
     public interface IProductRepo
     {
         public Task<IEnumerable<Product>> GetAllProducts();
-        public Task<Product> GetProductById(string id);
+        public Task<Product> GetProductByName(string Name);
+
         public Task<bool> AddProduct(Product product);
         public Task<bool> UpdateProduct(string productId,Product product);
     }

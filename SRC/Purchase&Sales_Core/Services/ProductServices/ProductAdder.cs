@@ -14,7 +14,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
     {
         public Task<bool> AddProduct(ProductAddDTO newProduct)
         {
-            Product product=new Product() {productId=newProduct.id,name=newProduct.name,purchasePrice=newProduct.purchasePrice,updatedAt=newProduct.updatedAt};
+            Product product=new Product() {name=newProduct.name,purchasePrice=newProduct.purchasePrice,updatedAt=newProduct.updatedAt};
 
             var added = _productRepo.AddProduct(product);
             return added;

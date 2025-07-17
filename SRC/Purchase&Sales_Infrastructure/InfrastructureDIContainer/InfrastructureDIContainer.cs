@@ -16,9 +16,12 @@ namespace Purchase_Sales_Infrastructure.InfrastructureDIContainer
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationDb")));
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(configuration.GetConnectionString("ApplicationDb"));
+                options.EnableSensitiveDataLogging();
+            });
             //Register Infrastructure services
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<ISaleRepo,SaleRepo>();
         }
 
     }
