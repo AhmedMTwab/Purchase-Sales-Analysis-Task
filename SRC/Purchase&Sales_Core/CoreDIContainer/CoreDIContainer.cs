@@ -19,6 +19,7 @@ namespace Purchase_Sales_Core.CoreDIContainer
             services.AddScoped<IGetExistingProductById, GetExistingProductById>();
             services.AddScoped<IGetExistingProductByName, GetExistingProductByName>();
             services.AddScoped<IGetTopProductsSales, GetTopProductsSales>();
+            services.AddScoped<IGetDeadstockProducts, GetDeadstockProducts>();
             services.AddScoped<IGetAllProducts, GetAllProducts>();
             services.AddScoped<IProductAdder, ProductAdder>();
             services.AddScoped<IProductUpdater, ProductUpdater>();
