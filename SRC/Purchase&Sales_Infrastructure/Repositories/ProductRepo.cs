@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Purchase_Sales_Domain.Models;
 using Purchase_Sales_Domain.RepositoryAbstractions;
@@ -19,6 +20,11 @@ namespace Purchase_Sales_Infrastructure.Repositories
             await db.SaveChangesAsync();
             return true;
         }
+        public async Task<bool> AddPulkOfProducts(List<Product> products)
+        {
+            await db.BulkInsertAsync(products);
+            return true;
+        }
 
         public async Task<List<Product>> GetAllProducts()
         {
@@ -27,7 +33,7 @@ namespace Purchase_Sales_Infrastructure.Repositories
         }
         public async Task<List<Product>> GetAllProductsWithSales()
         {
-            var products = await db.products.Include(p=>p.sales).ToListAsync();
+            var products = await db.products.Include(p=>p.sales).AsNoTracking().ToListAsync();
             return products;
         }
 
@@ -45,6 +51,11 @@ namespace Purchase_Sales_Infrastructure.Repositories
             existedProduct.purchasePrice = product.purchasePrice;
             existedProduct.updatedAt = product.updatedAt;
             await db.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdatePulkOfProduct(List<Product> products)
+        {
+            await db.BulkUpdateAsync(products);
             return true;
         }
     }

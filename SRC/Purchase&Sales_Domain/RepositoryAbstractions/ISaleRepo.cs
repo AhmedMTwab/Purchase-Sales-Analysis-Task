@@ -10,5 +10,7 @@ namespace Purchase_Sales_Domain.RepositoryAbstractions
     public interface ISaleRepo
     {
         public Task<bool> AddSale(Sale newSale);
+        public Task<bool> AddPulkOfSale(List<Sale> newSales);
+
     }
 }

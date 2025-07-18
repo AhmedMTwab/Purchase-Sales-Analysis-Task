@@ -27,7 +27,9 @@ namespace Purchase_Sales_Core.Services.SaleServices
                 int insertedSales = 0;
                 int numberOfRows = worksheet.Dimension.Rows;
                 List<Product> allProducts = await _getAllProducts.GetProductsAsync();
+                HashSet<string> allProductsNames = allProducts.Select(p=>p.name).ToHashSet();
                 List<ProductAddDTO> addedProducts= new List<ProductAddDTO>();
+                List<SaleAddDTO> salesToAdd= new List<SaleAddDTO>();
                 for (int row = 2; row <= numberOfRows; row++)
                 {
                     SaleAddDTO rowSale = new SaleAddDTO();
@@ -35,11 +37,10 @@ namespace Purchase_Sales_Core.Services.SaleServices
                     if (!string.IsNullOrEmpty(cellValue))
                     {
                         string productName= worksheet.GetValue<string>(row, 11);
-                        //var existedProduct=await _getExistingProductByName.GetProductByName(productName);
-                        var existedProduct = allProducts.FirstOrDefault(p => p.name == productName);
-                        if (existedProduct != null)
+                        var existedProduct = allProductsNames.Contains(productName);
+                        if (existedProduct)
                         {
-                            rowSale.productName = existedProduct.name; 
+                            rowSale.productName = productName; 
                         }
                         else
                         {
@@ -49,19 +50,31 @@ namespace Purchase_Sales_Core.Services.SaleServices
                                 purchasePrice = 0,
                                 updatedAt= DateTime.Now
                             };
-                            if (addedProducts.FirstOrDefault(p=>p.name == UnExistedProduct.name)==null)
+                            if (!addedProducts.Select(p=>p.name).ToHashSet().Contains(UnExistedProduct.name))
                             {
-                                await _productAdder.AddProduct(UnExistedProduct);
                                 addedProducts.Add(UnExistedProduct);
                             }
                             rowSale.productName = UnExistedProduct.name;
                         }
-                        rowSale.quantity = worksheet.GetValue<int>(row, 12);
-                        rowSale.price = worksheet.GetValue<decimal>(row, 13);
-                        await _saleAdder.AddSale(rowSale);
+                         var quantityCell = worksheet.Cells[row,12].Value;
+                        if (!decimal.TryParse(quantityCell.ToString(), out decimal quantity))
+                        {
+                            continue;
+                        }
+
+                        rowSale.quantity = (int)quantity;
+                        var priceCell= worksheet.Cells[row,13].Value;
+                        if (!decimal.TryParse(priceCell.ToString(), out decimal price))
+                        {
+                            continue;
+                        }
+                        rowSale.price = price;
+                        salesToAdd.Add(rowSale);
                         insertedSales++;
                     }
                 }
+                await _productAdder.AddPulkOfProducts(addedProducts);
+                await _saleAdder.AddPulkOfSales(salesToAdd);
                 return insertedSales;
             }
         }

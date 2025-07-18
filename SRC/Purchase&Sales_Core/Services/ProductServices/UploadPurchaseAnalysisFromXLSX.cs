@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
+using OfficeOpenXml.Table;
 using Purchase_Sales_Core.DTOs.ProductDTO;
 using Purchase_Sales_Core.DTOs.SaleDTO;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
@@ -27,29 +28,53 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 int insertedProducts = 0;
                 int numberOfRows = worksheet.Dimension.Rows;
                 List<Product> allProducts=await _getAllProducts.GetProductsAsync();
+                HashSet<string> allProductsNames=allProducts.Select(p=>p.name).ToHashSet();
+                List<ProductAddDTO> productsToAdd= new List<ProductAddDTO>();
+                List<Product> productsToUpdate = new List<Product>();
                 for (int row = 6; row <= numberOfRows; row++)
                 {
                     ProductAddDTO rowProduct = new ProductAddDTO();
                     string? cellValue = worksheet.GetValue(row, 18).ToString();
                     if (!string.IsNullOrEmpty(cellValue))
                     {
-                        int totalPurchase = worksheet.GetValue<int>(row, 5);
-                        int totalQuantity = worksheet.GetValue<int>(row, 11);
-                        if (totalQuantity != 0 && totalPurchase !=0)
-                            rowProduct.purchasePrice = totalPurchase / totalQuantity;
-                        else
+                        var PurchaseCell = worksheet.Cells[row,1].Value;
+                        if (!decimal.TryParse(PurchaseCell.ToString(), out decimal totalPurchase))
+                        {
                             continue;
+                        }
                         rowProduct.name = worksheet.GetValue<string>(row, 12);
                         rowProduct.updatedAt = DateTime.Now;
-                        //var isExist = await _getExistingProductByName.GetProductByName(rowProduct.name);
-                        var existedProduct = allProducts.FirstOrDefault(p=>p.name == rowProduct.name);
-                        if (existedProduct == null)
-                            await _productAdder.AddProduct(rowProduct);
+                        var existedProduct = allProductsNames.Contains(rowProduct.name);
+                        if (!existedProduct)
+                        {
+                            if (productsToAdd.Select(p => p.name).Contains(rowProduct.name))
+                            {
+                                productsToAdd.FirstOrDefault(p => p.name == rowProduct.name).purchasePrice += totalPurchase;
+                                continue;
+                            }
+                            rowProduct.purchasePrice = totalPurchase;
+                            productsToAdd.Add(rowProduct);
+                        }
                         else
-                            await _productUpdater.UpdateProduct(rowProduct.name, rowProduct);
+                        {
+                            var changedProduct = allProducts.FirstOrDefault(p => p.name == rowProduct.name);
+                            if (!productsToUpdate.Contains(changedProduct))
+                            {
+                                changedProduct.purchasePrice += totalPurchase;
+                                productsToUpdate.Add(changedProduct);
+                            }
+                            else
+                            {
+                                productsToUpdate.FirstOrDefault(p => p.name == rowProduct.name).purchasePrice += totalPurchase;
+                                continue;
+                            }
+                        }
                         insertedProducts++;
                     }
+                   
                 }
+                await _productAdder.AddPulkOfProducts(productsToAdd);
+                await _productUpdater.UpdatePulkOfProduct(productsToUpdate);
                 return insertedProducts;
             }
         }

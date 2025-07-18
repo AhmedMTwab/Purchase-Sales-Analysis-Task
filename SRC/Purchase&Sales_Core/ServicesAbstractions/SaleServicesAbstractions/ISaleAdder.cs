@@ -11,6 +11,8 @@ namespace Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions
     public interface ISaleAdder
     {
         public Task<bool> AddSale(SaleAddDTO newSale);
+        public Task<bool> AddPulkOfSales(List<SaleAddDTO> newSales);
+
 
     }
 }

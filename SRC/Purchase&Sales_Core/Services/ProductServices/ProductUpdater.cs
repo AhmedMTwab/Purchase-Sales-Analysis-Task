@@ -21,5 +21,11 @@ namespace Purchase_Sales_Core.Services.ProductServices
             var updated=await _productRepo.UpdateProduct(productId, product);
             return updated;
         }
+
+        public async Task<bool> UpdatePulkOfProduct(List<Product> newProductsData)
+        {
+            var updated = await _productRepo.UpdatePulkOfProduct(newProductsData);
+            return updated;
+        }
     }
 }
