@@ -42,7 +42,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
                         {
                             continue;
                         }
-                        rowProduct.name = worksheet.GetValue<string>(row, 12);
+                        rowProduct.name = worksheet.GetValue<string>(row, 12).Trim();
                         rowProduct.updatedAt = DateTime.Now;
                         var existedProduct = allProductsNames.Contains(rowProduct.name);
                         if (!existedProduct)

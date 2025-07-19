@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,67 +17,106 @@ namespace Purchase_Sales_Core.Services.SaleServices
 {
     public class UploadSaleAnalysisFromExcel(ISaleAdder _saleAdder,IGetAllProducts _getAllProducts,IProductAdder _productAdder) : IUploadSaleAnalysisFromExcel
     {
+        const int batchSize = 20000;
         public async Task<int> UploadSaleData(IFormFile saleFile)
         {
-            MemoryStream stream = new MemoryStream();
-            await saleFile.CopyToAsync(stream);
-            ExcelPackage.License.SetNonCommercialPersonal("Eltwab");
-            using (ExcelPackage excelpackage = new ExcelPackage(stream))
-            {
-                ExcelWorksheet worksheet = excelpackage.Workbook.Worksheets[0];
-                int insertedSales = 0;
-                int numberOfRows = worksheet.Dimension.Rows;
-                List<Product> allProducts = await _getAllProducts.GetProductsAsync();
-                HashSet<string> allProductsNames = allProducts.Select(p=>p.name).ToHashSet();
-                List<ProductAddDTO> addedProducts= new List<ProductAddDTO>();
-                List<SaleAddDTO> salesToAdd= new List<SaleAddDTO>();
-                for (int row = 2; row <= numberOfRows; row++)
+            
+                MemoryStream stream = new MemoryStream();
+                await saleFile.CopyToAsync(stream);
+                ExcelPackage.License.SetNonCommercialPersonal("Eltwab");
+                using (ExcelPackage excelpackage = new ExcelPackage(stream))
                 {
-                    SaleAddDTO rowSale = new SaleAddDTO();
-                    string? cellValue = worksheet.GetValue(row, 9).ToString();
-                    if (!string.IsNullOrEmpty(cellValue))
+                    ExcelWorksheet worksheet = excelpackage.Workbook.Worksheets[0];
+                    int insertedSales = 0;
+                    int numberOfRows = worksheet.Dimension.Rows;
+                    List<Product> allProducts = await _getAllProducts.GetProductsAsync();
+                HashSet<string> allProductsNames = new HashSet<string>(
+                        allProducts.Select(p => p.name),
+                        StringComparer.OrdinalIgnoreCase
+                                                                      );
+                List<ProductAddDTO> addedProducts = new List<ProductAddDTO>();
+                    List<SaleAddDTO> salesToAdd = new List<SaleAddDTO>();
+                    for (int row = 2; row <= numberOfRows; row++)
                     {
-                        string productName= worksheet.GetValue<string>(row, 11);
-                        var existedProduct = allProductsNames.Contains(productName);
-                        if (existedProduct)
+                        SaleAddDTO rowSale = new SaleAddDTO();
+                        string? cellValue = worksheet.GetValue(row, 9).ToString();
+                        if (!string.IsNullOrEmpty(cellValue))
                         {
-                            rowSale.productName = productName; 
+                        string productName = worksheet.GetValue<string>(row, 11);
+                        var trimedName = productName.Trim();
+                        if (trimedName == "N.B برفان 100مل blue")
+                        {
+                            var name = trimedName;
                         }
-                        else
-                        {
-                            ProductAddDTO UnExistedProduct = new ProductAddDTO()
+                        bool isNewProduct = !allProductsNames.Contains(trimedName) &&
+                                !addedProducts.Any(p => p.name == trimedName);
+                        if (isNewProduct)
                             {
-                                name = productName,
-                                purchasePrice = 0,
-                                updatedAt= DateTime.Now
-                            };
-                            if (!addedProducts.Select(p=>p.name).ToHashSet().Contains(UnExistedProduct.name))
-                            {
+                                ProductAddDTO UnExistedProduct = new ProductAddDTO()
+                                {
+                                    name = trimedName,
+                                    purchasePrice = 0,
+                                    updatedAt = DateTime.Now
+                                };
+
                                 addedProducts.Add(UnExistedProduct);
-                            }
-                            rowSale.productName = UnExistedProduct.name;
-                        }
-                         var quantityCell = worksheet.Cells[row,12].Value;
-                        if (!decimal.TryParse(quantityCell.ToString(), out decimal quantity))
-                        {
-                            continue;
+                                allProductsNames.Add(trimedName);
                         }
 
-                        rowSale.quantity = (int)quantity;
-                        var priceCell= worksheet.Cells[row,13].Value;
-                        if (!decimal.TryParse(priceCell.ToString(), out decimal price))
-                        {
-                            continue;
+                            rowSale.productName = trimedName;
+                           
+                            var quantityCell = worksheet.Cells[row, 12].Value;
+                            if (!decimal.TryParse(quantityCell.ToString(), out decimal quantity))
+                            {
+                                continue;
+                            }
+
+                            rowSale.quantity = (int)quantity;
+                            var priceCell = worksheet.Cells[row, 13].Value;
+                            if (!decimal.TryParse(priceCell.ToString(), out decimal price))
+                            {
+                                continue;
+                            }
+                            rowSale.price = price;
+                            salesToAdd.Add(rowSale);
+                            insertedSales++;
+                            if (salesToAdd.Count >= batchSize)
+                            {
+                                if (addedProducts.Any())
+                                {
+                                try
+                                {
+                                    var result = addedProducts.Where(p => p.name == "N.B برفان 100مل blue").Count();
+                                    var result2 = allProductsNames.Where(p => p == "N.B برفان 100مل blue").Count();
+                                    
+
+                                    await _productAdder.AddPulkOfProducts(addedProducts);
+                                    addedProducts.Clear();
+                                }
+                                catch (Exception ex){
+
+                                    IEnumerable<string> commonItems = addedProducts.Select(p=>p.name).ToList().Intersect(allProductsNames);
+                                    Console.Write(commonItems);
+                                }
+                            }
+                                await _saleAdder.AddPulkOfSales(salesToAdd);
+                                allProducts=await _getAllProducts.GetProductsAsync();
+                                salesToAdd.Clear();
+                            }
                         }
-                        rowSale.price = price;
-                        salesToAdd.Add(rowSale);
-                        insertedSales++;
                     }
+                    if (addedProducts.Any())
+                    {
+                        await _productAdder.AddPulkOfProducts(addedProducts);
+                    }
+                    if (salesToAdd.Any())
+                    {
+                        await _saleAdder.AddPulkOfSales(salesToAdd);
+                    }
+
+                    return insertedSales;
                 }
-                await _productAdder.AddPulkOfProducts(addedProducts);
-                await _saleAdder.AddPulkOfSales(salesToAdd);
-                return insertedSales;
-            }
+            
         }
             
         
