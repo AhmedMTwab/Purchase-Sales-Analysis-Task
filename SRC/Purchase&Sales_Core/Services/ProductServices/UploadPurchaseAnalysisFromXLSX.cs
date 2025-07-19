@@ -34,7 +34,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 for (int row = 6; row <= numberOfRows; row++)
                 {
                     ProductAddDTO rowProduct = new ProductAddDTO();
-                    string? cellValue = worksheet.GetValue(row, 18).ToString();
+                    string? cellValue = worksheet.Cells[row,18].Value.ToString();
                     if (!string.IsNullOrEmpty(cellValue))
                     {
                         var PurchaseCell = worksheet.Cells[row,1].Value;

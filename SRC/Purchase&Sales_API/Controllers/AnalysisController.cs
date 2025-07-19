@@ -8,9 +8,9 @@ namespace Purchase_Sales_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AnalysisController(IGetTopProductsSales _getTopProductsSales,IGetDeadstockProducts _getDeadstockProducts) : ControllerBase
+    public class AnalysisController(IGetTopProductsSales _getTopProductsSales,IGetDeadstockProducts _getDeadstockProducts,IGetProductProfit _getProductProfit) : ControllerBase
     {
-        [HttpGet("/GetTop/{NumberOfProducts:int}")]
+        [HttpGet("/GetTopSales/{NumberOfProducts:int}")]
         public async Task<ActionResult<List<string>>> GetTopSold(int NumberOfProducts)
         {
             var orderdProducts=await _getTopProductsSales.GetTopSoldProducts(NumberOfProducts);
@@ -25,6 +25,14 @@ namespace Purchase_Sales_API.Controllers
             if (deadstockProducts != null)
                 return Ok(deadstockProducts);
             return BadRequest("There is no Deadstock Products");
+        }
+        [HttpGet("/GetProfit/{productName}")]
+        public async Task<ActionResult<ProfitResponseDTO>> GetProductProfit(string productName)
+        {
+            var productProfit = await _getProductProfit.GetProductProfitAsync(productName);
+            if (productProfit != null)
+                return Ok(productProfit);
+            return BadRequest("There is no Product Data");
         }
 
     }

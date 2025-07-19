@@ -41,7 +41,13 @@ namespace Purchase_Sales_Infrastructure.Repositories
 
         public async Task<Product> GetProductByName(string Name)
         {
-            var product = await db.products.FirstOrDefaultAsync(p => p.name == Name);
+            var product = await db.products.AsNoTracking().FirstOrDefaultAsync(p => p.name == Name);
+            return product;
+        }
+
+        public async Task<Product> GetProductByNameWithSales(string Name)
+        {
+            var product = await db.products.Include(p=>p.sales).AsNoTracking().FirstOrDefaultAsync(p => p.name == Name);
             return product;
         }
 

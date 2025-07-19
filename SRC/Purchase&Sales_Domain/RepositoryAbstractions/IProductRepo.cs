@@ -13,6 +13,7 @@ namespace Purchase_Sales_Domain.RepositoryAbstractions
         public Task<List<Product>> GetAllProductsWithSales();
 
         public Task<Product> GetProductByName(string Name);
+        public Task<Product> GetProductByNameWithSales(string Name);
         public Task<bool> AddPulkOfProducts(List<Product> products);
 
         public Task<bool> AddProduct(Product product);

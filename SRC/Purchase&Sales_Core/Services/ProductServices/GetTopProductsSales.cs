@@ -20,11 +20,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
             Decimal productTotalIncome = 0;
             foreach (var product in products)
             {
-                var ProductIncome = product.sales.Select(p => p.price);
-                foreach(var sell in ProductIncome)
-                {
-                    productTotalIncome += sell;
-                }
+                 productTotalIncome = product.sales.Select(p => p.price).Sum();
                 productTotalSales.Add(product.name, productTotalIncome);
                 productTotalIncome = 0;
             }
