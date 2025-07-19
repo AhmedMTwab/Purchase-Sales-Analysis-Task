@@ -29,7 +29,7 @@ namespace Purchase_Sales_API.Controllers
         [HttpGet("/GetProfit/{productName}")]
         public async Task<ActionResult<ProfitResponseDTO>> GetProductProfit(string productName)
         {
-            var productProfit = await _getProductProfit.GetProductProfitAsync(productName);
+            var productProfit = await _getProductProfit.GetProductProfitAsync(productName.Trim());
             if (productProfit != null)
                 return Ok(productProfit);
             return BadRequest("There is no Product Data");

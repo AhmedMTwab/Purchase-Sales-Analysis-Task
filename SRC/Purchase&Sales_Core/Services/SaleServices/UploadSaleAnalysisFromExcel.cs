@@ -44,10 +44,6 @@ namespace Purchase_Sales_Core.Services.SaleServices
                         {
                         string productName = worksheet.GetValue<string>(row, 11);
                         var trimedName = productName.Trim();
-                        if (trimedName == "N.B برفان 100مل blue")
-                        {
-                            var name = trimedName;
-                        }
                         bool isNewProduct = !allProductsNames.Contains(trimedName) &&
                                 !addedProducts.Any(p => p.name == trimedName);
                         if (isNewProduct)
@@ -84,21 +80,9 @@ namespace Purchase_Sales_Core.Services.SaleServices
                             {
                                 if (addedProducts.Any())
                                 {
-                                try
-                                {
-                                    var result = addedProducts.Where(p => p.name == "N.B برفان 100مل blue").Count();
-                                    var result2 = allProductsNames.Where(p => p == "N.B برفان 100مل blue").Count();
-                                    
-
                                     await _productAdder.AddPulkOfProducts(addedProducts);
                                     addedProducts.Clear();
                                 }
-                                catch (Exception ex){
-
-                                    IEnumerable<string> commonItems = addedProducts.Select(p=>p.name).ToList().Intersect(allProductsNames);
-                                    Console.Write(commonItems);
-                                }
-                            }
                                 await _saleAdder.AddPulkOfSales(salesToAdd);
                                 allProducts=await _getAllProducts.GetProductsAsync();
                                 salesToAdd.Clear();

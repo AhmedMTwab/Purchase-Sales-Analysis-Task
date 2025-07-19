@@ -12,7 +12,7 @@ namespace Purchase_Sales_API.Controllers
         [HttpGet("/GetProduct/{productName}")]
         public async Task<ActionResult<List<ProductAddDTO>>> GetProductsByName(string productName)
         {
-            var matchedProducts=await _searchForProductByName.SearchForPorductsByName(productName);
+            var matchedProducts=await _searchForProductByName.SearchForPorductsByName(productName.Trim());
             var products = matchedProducts.Select(p => p.ProductTODTO()).ToList();
             if(products!=null)
                 return Ok(products);

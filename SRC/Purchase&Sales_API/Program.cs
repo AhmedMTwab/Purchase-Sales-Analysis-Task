@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Http.Features;
+using Purchase_Sales_API.ErrorHandlingMiddleware;
 using Purchase_Sales_Core.CoreDIContainer;
 using Purchase_Sales_Infrastructure.InfrastructureDIContainer;
 namespace Purchase_Sales_API
@@ -39,7 +40,7 @@ namespace Purchase_Sales_API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCustomErrorHandlingMiddleware();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

@@ -26,7 +26,9 @@ namespace Purchase_Sales_Core.CoreDIContainer
             services.AddScoped<IProductAdder, ProductAdder>();
             services.AddScoped<IProductUpdater, ProductUpdater>();
             services.AddScoped<IUploadPurchaseAnalysisFromExcel, UploadPurchaseAnalysisFromXLSX>();
+            services.AddScoped<IUploadPurchaseAnalysisFromCsv, UploadPurchaseAnalysisFromCsv>();
             services.AddScoped<IUploadSaleAnalysisFromExcel, UploadSaleAnalysisFromExcel>();
+            services.AddScoped<IUploadSaleAnalysisFromCsv, UploadSaleAnalysisFromCsv>();
             services.AddScoped<ISaleAdder, SaleAdder>();
         }
 
