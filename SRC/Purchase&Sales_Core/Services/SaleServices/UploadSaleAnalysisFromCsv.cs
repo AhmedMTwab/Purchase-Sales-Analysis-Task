@@ -21,9 +21,9 @@ namespace Purchase_Sales_Core.Services.SaleServices
         public async Task<int> UploadSaleData(IFormFile saleFile)
         {
             int insertedSales = 0;
-            var allProducts = await _getAllProducts.GetProductsAsync();
-            var allProductNames = new HashSet<string>(allProducts.Select(p => p.name), StringComparer.OrdinalIgnoreCase);
-            var addedProducts = new List<ProductAddDTO>();
+            var allProducts = await _getAllProducts.GetProductsNamesAsync();
+            var allProductNames = new HashSet<string>(allProducts, StringComparer.OrdinalIgnoreCase);
+            var addedProducts = new Dictionary<string,ProductAddDTO>();
             var salesToAdd = new List<SaleAddDTO>();
 
             using (var stream = saleFile.OpenReadStream())
@@ -43,7 +43,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                     if (string.IsNullOrEmpty(productName))
                         continue;
 
-                    if (!allProductNames.Contains(productName) && !addedProducts.Any(p => p.name == productName))
+                    if (!allProductNames.Contains(productName) && !addedProducts.ContainsKey(productName))
                     {
                         var newProduct = new ProductAddDTO
                         {
@@ -51,7 +51,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                             purchasePrice = 0,
                             updatedAt = DateTime.Now
                         };
-                        addedProducts.Add(newProduct);
+                        addedProducts.Add(newProduct.name,newProduct);
                         allProductNames.Add(productName);
                     }
 
@@ -71,7 +71,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                     {
                         if (addedProducts.Any())
                         {
-                            await _productAdder.AddPulkOfProducts(addedProducts);
+                            await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
                             addedProducts.Clear();
                         }
                         await _saleAdder.AddPulkOfSales(salesToAdd);
@@ -80,7 +80,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                 }
                 if (addedProducts.Any())
                 {
-                    await _productAdder.AddPulkOfProducts(addedProducts);
+                    await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
                 }
                 if (salesToAdd.Any())
                 {

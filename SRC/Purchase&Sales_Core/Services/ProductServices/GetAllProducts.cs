@@ -16,5 +16,10 @@ namespace Purchase_Sales_Core.Services.ProductServices
             var products=await _productRepo.GetAllProducts();
             return products;
         }
+        public async Task<List<string>> GetProductsNamesAsync()
+        {
+            var products = await _productRepo.GetAllProductsNames();
+            return products;
+        }
     }
 }

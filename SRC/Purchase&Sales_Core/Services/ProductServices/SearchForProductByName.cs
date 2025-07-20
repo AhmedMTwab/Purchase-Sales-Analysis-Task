@@ -13,8 +13,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
     {
         public async Task<List<Product>> SearchForPorductsByName(string productName)
         {
-            var allProducts=await _productRepo.GetAllProducts();
-            var matchedProducts = allProducts.Where(p => (p.name != null) ? p.name.Contains(productName, StringComparison.OrdinalIgnoreCase) : false).ToList();
+            var matchedProducts = await _productRepo.GetListOfProductsByName(productName);
             return matchedProducts;
         }
     }

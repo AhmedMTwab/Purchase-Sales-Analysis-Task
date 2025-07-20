@@ -12,10 +12,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
     {
         public async Task<List<string>> GetDeadstockProductsAsync()
         {
-            var products = await _productRepo.GetAllProductsWithSales();
-            List<string> deadstockProducts = new List<string>();
-            deadstockProducts=products.Where(p=>p.sales.Count == 0).Select(p=>p.name).ToList();
-            return deadstockProducts;
+          return await _productRepo.GetDeadstockProducts();
         }
     }
 }

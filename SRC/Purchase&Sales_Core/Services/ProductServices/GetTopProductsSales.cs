@@ -15,17 +15,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
     {
         public async Task<List<string>> GetTopSoldProducts(int NoOfProducts)
         {
-            var products = await _productRepo.GetAllProductsWithSales();
-            Dictionary<string,Decimal> productTotalSales = new Dictionary<string,Decimal>();
-            Decimal productTotalIncome = 0;
-            foreach (var product in products)
-            {
-                 productTotalIncome = product.sales.Select(p => p.price).Sum();
-                productTotalSales.Add(product.name, productTotalIncome);
-                productTotalIncome = 0;
-            }
-            var topSold= productTotalSales.OrderByDescending(p=>p.Value).Take(NoOfProducts).Select(p=>p.Key).ToList();
-            
+            var topSold =await _productRepo.GetTopSoldProductsNames(NoOfProducts);
             return topSold;
         }
     }

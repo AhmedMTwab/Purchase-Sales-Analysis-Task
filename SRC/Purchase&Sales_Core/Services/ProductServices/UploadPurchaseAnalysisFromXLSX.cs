@@ -28,9 +28,10 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 int insertedProducts = 0;
                 int numberOfRows = worksheet.Dimension.Rows;
                 List<Product> allProducts=await _getAllProducts.GetProductsAsync();
+                var productsDict = allProducts.ToDictionary(p => p.name, p => p, StringComparer.OrdinalIgnoreCase);
                 HashSet<string> allProductsNames=allProducts.Select(p=>p.name).ToHashSet();
-                List<ProductAddDTO> productsToAdd= new List<ProductAddDTO>();
-                List<Product> productsToUpdate = new List<Product>();
+                Dictionary<string,ProductAddDTO> productsToAdd= new Dictionary<string, ProductAddDTO>();
+                Dictionary<string,Product> productsToUpdate = new Dictionary<string, Product>();
                 for (int row = 6; row <= numberOfRows; row++)
                 {
                     ProductAddDTO rowProduct = new ProductAddDTO();
@@ -47,25 +48,25 @@ namespace Purchase_Sales_Core.Services.ProductServices
                         var existedProduct = allProductsNames.Contains(rowProduct.name);
                         if (!existedProduct)
                         {
-                            if (productsToAdd.Select(p => p.name).Contains(rowProduct.name))
+                            if (productsToAdd.ContainsKey(rowProduct.name))
                             {
-                                productsToAdd.FirstOrDefault(p => p.name == rowProduct.name).purchasePrice += totalPurchase;
+                                productsToAdd[rowProduct.name].purchasePrice += totalPurchase;
                                 continue;
                             }
                             rowProduct.purchasePrice = totalPurchase;
-                            productsToAdd.Add(rowProduct);
+                            productsToAdd.Add(rowProduct.name,rowProduct);
                         }
                         else
                         {
                             var changedProduct = allProducts.FirstOrDefault(p => p.name == rowProduct.name);
-                            if (!productsToUpdate.Contains(changedProduct))
+                            if (!productsToUpdate.ContainsValue(changedProduct))
                             {
                                 changedProduct.purchasePrice += totalPurchase;
-                                productsToUpdate.Add(changedProduct);
+                                productsToUpdate.Add(changedProduct.name, changedProduct);
                             }
                             else
                             {
-                                productsToUpdate.FirstOrDefault(p => p.name == rowProduct.name).purchasePrice += totalPurchase;
+                                productsToUpdate[rowProduct.name].purchasePrice += totalPurchase;
                                 continue;
                             }
                         }
@@ -73,8 +74,8 @@ namespace Purchase_Sales_Core.Services.ProductServices
                     }
                    
                 }
-                await _productAdder.AddPulkOfProducts(productsToAdd);
-                await _productUpdater.UpdatePulkOfProduct(productsToUpdate);
+                await _productAdder.AddPulkOfProducts(productsToAdd.Values.ToList());
+                await _productUpdater.UpdatePulkOfProduct(productsToUpdate.Values.ToList());
                 return insertedProducts;
             }
         }

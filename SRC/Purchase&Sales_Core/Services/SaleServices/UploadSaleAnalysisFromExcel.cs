@@ -29,12 +29,12 @@ namespace Purchase_Sales_Core.Services.SaleServices
                     ExcelWorksheet worksheet = excelpackage.Workbook.Worksheets[0];
                     int insertedSales = 0;
                     int numberOfRows = worksheet.Dimension.Rows;
-                    List<Product> allProducts = await _getAllProducts.GetProductsAsync();
-                HashSet<string> allProductsNames = new HashSet<string>(
-                        allProducts.Select(p => p.name),
+                    List<string> allProducts = await _getAllProducts.GetProductsNamesAsync();
+                    HashSet<string> allProductsNames = new HashSet<string>(
+                        allProducts,
                         StringComparer.OrdinalIgnoreCase
                                                                       );
-                List<ProductAddDTO> addedProducts = new List<ProductAddDTO>();
+                Dictionary<string,ProductAddDTO> addedProducts = new Dictionary<string, ProductAddDTO>();
                     List<SaleAddDTO> salesToAdd = new List<SaleAddDTO>();
                     for (int row = 2; row <= numberOfRows; row++)
                     {
@@ -45,7 +45,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                         string productName = worksheet.GetValue<string>(row, 11);
                         var trimedName = productName.Trim();
                         bool isNewProduct = !allProductsNames.Contains(trimedName) &&
-                                !addedProducts.Any(p => p.name == trimedName);
+                                !addedProducts.ContainsKey(trimedName);
                         if (isNewProduct)
                             {
                                 ProductAddDTO UnExistedProduct = new ProductAddDTO()
@@ -55,7 +55,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                                     updatedAt = DateTime.Now
                                 };
 
-                                addedProducts.Add(UnExistedProduct);
+                                addedProducts.Add(UnExistedProduct.name, UnExistedProduct);
                                 allProductsNames.Add(trimedName);
                         }
 
@@ -76,29 +76,29 @@ namespace Purchase_Sales_Core.Services.SaleServices
                             rowSale.price = price;
                             salesToAdd.Add(rowSale);
                             insertedSales++;
-                            if (salesToAdd.Count >= batchSize)
+                        if (salesToAdd.Count >= batchSize)
+                        {
+                            if (addedProducts.Any())
                             {
-                                if (addedProducts.Any())
-                                {
-                                    await _productAdder.AddPulkOfProducts(addedProducts);
-                                    addedProducts.Clear();
-                                }
-                                await _saleAdder.AddPulkOfSales(salesToAdd);
-                                allProducts=await _getAllProducts.GetProductsAsync();
-                                salesToAdd.Clear();
+                                await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
+                                addedProducts.Clear();
                             }
+                            await _saleAdder.AddPulkOfSales(salesToAdd);
+                            //allProducts=await _getAllProducts.GetProductsNamesAsync();
+                            salesToAdd.Clear();
                         }
                     }
-                    if (addedProducts.Any())
-                    {
-                        await _productAdder.AddPulkOfProducts(addedProducts);
                     }
-                    if (salesToAdd.Any())
-                    {
-                        await _saleAdder.AddPulkOfSales(salesToAdd);
-                    }
+                if (addedProducts.Any())
+                {
+                    await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
+                }
+                if (salesToAdd.Any())
+                {
+                    await _saleAdder.AddPulkOfSales(salesToAdd);
+                }
 
-                    return insertedSales;
+                return insertedSales;
                 }
             
         }

@@ -10,5 +10,7 @@ namespace Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions
     public interface IGetAllProducts
     {
         public Task<List<Product>> GetProductsAsync();
+        public  Task<List<string>> GetProductsNamesAsync();
+
     }
 }

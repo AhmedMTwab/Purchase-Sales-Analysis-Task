@@ -21,12 +21,13 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 int insertedProducts = 0;
 
                 List<Product> allProducts = await _getAllProducts.GetProductsAsync();
-                HashSet<string> allProductsNames = new HashSet<string>(
+            var productsDict = allProducts.ToDictionary(p => p.name, p => p, StringComparer.OrdinalIgnoreCase);
+            HashSet<string> allProductsNames = new HashSet<string>(
                     allProducts.Select(p => p.name),
                     StringComparer.OrdinalIgnoreCase
                 );
 
-                List<ProductAddDTO> addedProducts = new List<ProductAddDTO>();
+                Dictionary<string,ProductAddDTO> addedProducts = new Dictionary<string, ProductAddDTO>();
 
                 using (var stream = purchaseFile.OpenReadStream())
                 using (var reader = new StreamReader(stream))
@@ -58,7 +59,7 @@ namespace Purchase_Sales_Core.Services.ProductServices
                             decimal.TryParse(purchasePriceField, out purchasePrice);
 
                         if (!allProductsNames.Contains(productName) &&
-                            !addedProducts.Any(p => p.name.Equals(productName, StringComparison.OrdinalIgnoreCase)))
+                            !addedProducts.ContainsKey(productName))
                         {
                             var productDto = new ProductAddDTO
                             {
@@ -66,20 +67,20 @@ namespace Purchase_Sales_Core.Services.ProductServices
                                 purchasePrice = purchasePrice,
                                 updatedAt = DateTime.Now
                             };
-                            addedProducts.Add(productDto);
+                            addedProducts.Add(productDto.name, productDto);
                             allProductsNames.Add(productName);
                             insertedProducts++;
                         }
 
                         if (addedProducts.Count >= batchSize)
                         {
-                            await _productAdder.AddPulkOfProducts(addedProducts);
+                            await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
                             addedProducts.Clear();
                         }
                     }
                     if (addedProducts.Any())
                     {
-                        await _productAdder.AddPulkOfProducts(addedProducts);
+                        await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
                     }
                 }
                 return insertedProducts;

@@ -13,9 +13,9 @@ namespace Purchase_Sales_Core.Services.ProductServices
     {
        public async Task<ProfitResponseDTO> GetProductProfitAsync(string productName)
         {
-           var product = await _productRepo.GetProductByNameWithSales(productName);
+           var product = await _productRepo.GetProductByName(productName);
            var purchasePrice=product.purchasePrice;
-           var totalSellPrice=product.sales.Select(s => s.price).Sum();
+            var totalSellPrice =await _productRepo.GetProductTotalSales(productName);
             var totalProfit = totalSellPrice - purchasePrice;
             return new ProfitResponseDTO {productName=productName, purchasePrice=purchasePrice,sellPrice=totalSellPrice,profit=totalProfit};
 
