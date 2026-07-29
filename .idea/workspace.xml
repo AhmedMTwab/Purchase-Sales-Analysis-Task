@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="71d04dcb-5fea-40f3-a246-a4c2e35b229c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Documentation.md" beforeDir="false" afterPath="$PROJECT_DIR$/Documentation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Purchase&amp;Sales.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Purchase&amp;Sales.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/AnalysisController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/AnalysisController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/ProductController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/ProductController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/PurchaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/PurchaseController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/SaleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Controllers/SaleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/ErrorHandlingMiddleware/ErrorHandlingMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/ErrorHandlingMiddleware/ErrorHandlingMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Purchase&amp;Sales_API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Purchase&amp;Sales_API.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Purchase&amp;Sales_API.http" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/Purchase&amp;Sales_API.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_API/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/CoreDIContainer/CoreDIContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/CoreDIContainer/CoreDIContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/ProductDTO/ProductAddDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/ProductDTO/ProductAddDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/ProductDTO/ProfitResponseDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/ProductDTO/ProfitResponseDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/SaleDTO/SaleAddDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/DTOs/SaleDTO/SaleAddDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Purchase&amp;Sales_Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Purchase&amp;Sales_Core.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetAllProducts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetAllProducts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetDeadstockProducts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetDeadstockProducts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetExistingProductById.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetExistingProductById.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetExistingProductByName.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetExistingProductByName.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetProductProfit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetProductProfit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetTopProductsSales.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/GetTopProductsSales.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/ProductAdder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/ProductAdder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/ProductUpdater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/ProductUpdater.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/SearchForProductByName.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/SearchForProductByName.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/UploadPurchaseAnalysisFromCsv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/UploadPurchaseAnalysisFromCsv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/UploadPurchaseAnalysisFromXLSX.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/ProductServices/UploadPurchaseAnalysisFromXLSX.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/SaleAdder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/SaleAdder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/UploadSaleAnalysisFromCsv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/UploadSaleAnalysisFromCsv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/UploadSaleAnalysisFromExcel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/Services/SaleServices/UploadSaleAnalysisFromExcel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetAllProducts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetAllProducts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetDeadstockProducts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetDeadstockProducts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetExistingProductById.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetExistingProductById.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetExistingProductByName.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetExistingProductByName.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetProductProfit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetProductProfit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetTopProductsSales.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IGetTopProductsSales.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IProductAdder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IProductAdder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IProductUpdater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IProductUpdater.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/ISearchForProductByName.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/ISearchForProductByName.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IUploadPurchaseAnalysisFromCsv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IUploadPurchaseAnalysisFromCsv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IUploadPurchaseAnalysisFromExcel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/ProductServicesAbstractions/IUploadPurchaseAnalysisFromExcel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/ISaleAdder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/ISaleAdder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/IUploadSaleAnalysisFromCsv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/IUploadSaleAnalysisFromCsv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/IUploadSaleAnalysisFromExcel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Core/ServicesAbstractions/SaleServicesAbstractions/IUploadSaleAnalysisFromExcel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Models/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Models/Sale.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Models/Sale.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Purchase&amp;Sales_Domain.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/Purchase&amp;Sales_Domain.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/RepositoryAbstractions/IProductRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/RepositoryAbstractions/IProductRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/RepositoryAbstractions/ISaleRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Domain/RepositoryAbstractions/ISaleRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Context/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Context/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/InfrastructureDIContainer/InfrastructureDIContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/InfrastructureDIContainer/InfrastructureDIContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715113938_FirstMigration.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715113938_FirstMigration.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715113938_FirstMigration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715113938_FirstMigration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715140342_RemoveQuantity.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715140342_RemoveQuantity.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715140342_RemoveQuantity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715140342_RemoveQuantity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715220747_changeProductID.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715220747_changeProductID.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715220747_changeProductID.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250715220747_changeProductID.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250716200317_RemoveSaleDate.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250716200317_RemoveSaleDate.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250716200317_RemoveSaleDate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250716200317_RemoveSaleDate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250717111908_ProductNamePK.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250717111908_ProductNamePK.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250717111908_ProductNamePK.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/20250717111908_ProductNamePK.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Purchase&amp;Sales_Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Purchase&amp;Sales_Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Repositories/ProductRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Repositories/ProductRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Repositories/SaleRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Purchase&amp;Sales_Infrastructure/Repositories/SaleRepo.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="32YLxkqWZoL3zPcgzvZgrkL3Wr3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/mnt/0A84046D84045D97/programming/Gomla Market Assasment/Purchase&Sales"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="71d04dcb-5fea-40f3-a246-a4c2e35b229c" name="Changes" comment="" />
+      <created>1757592807548</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1757592807548</updated>
+    </task>
+    <servers />
+  </component>
+</project>
