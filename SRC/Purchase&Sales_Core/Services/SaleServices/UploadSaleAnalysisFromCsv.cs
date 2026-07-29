@@ -17,13 +17,13 @@ namespace Purchase_Sales_Core.Services.SaleServices
 {
     public class UploadSaleAnalysisFromCsv(ISaleAdder _saleAdder, IGetAllProducts _getAllProducts, IProductAdder _productAdder) : IUploadSaleAnalysisFromCsv
     {
-        const int batchSize = 20000;
+        const int batchSize = constants.BatchSize;
         public async Task<int> UploadSaleData(IFormFile saleFile)
         {
             int insertedSales = 0;
             var allProducts = await _getAllProducts.GetProductsNamesAsync();
             var allProductNames = new HashSet<string>(allProducts, StringComparer.OrdinalIgnoreCase);
-            var addedProducts = new Dictionary<string,ProductAddDTO>();
+            var addedProducts = new Dictionary<string, ProductAddDTO>();
             var salesToAdd = new List<SaleAddDTO>();
 
             using (var stream = saleFile.OpenReadStream())
@@ -51,7 +51,7 @@ namespace Purchase_Sales_Core.Services.SaleServices
                             purchasePrice = 0,
                             updatedAt = DateTime.Now
                         };
-                        addedProducts.Add(newProduct.name,newProduct);
+                        addedProducts.Add(newProduct.name, newProduct);
                         allProductNames.Add(productName);
                     }
 
