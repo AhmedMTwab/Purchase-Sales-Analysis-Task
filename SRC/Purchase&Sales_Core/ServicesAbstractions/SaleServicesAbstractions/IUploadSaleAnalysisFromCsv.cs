@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions
 {
-    public interface IUploadSaleAnalysisFromCsv
-    {
-      public Task<int> UploadSaleData(IFormFile saleFile);
+  public interface IUploadSaleAnalysisFromCsv
+  {
+    public Task<int> UploadSaleData(SalesFileMetadataDTO saleFileDTO);
 
-    }
+  }
 }
