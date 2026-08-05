@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Purchase_Sales_Core;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
@@ -13,6 +14,7 @@ namespace Purchase_Sales_API.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadSales(SalesFileMetadataDTO salesFileDTO)
         {
+            var timer = Stopwatch.StartNew();
             if (salesFileDTO.salesFile == null || salesFileDTO.salesFile.Length == 0)
             {
                 return BadRequest("Sales file is Missed or Empty");
@@ -26,8 +28,10 @@ namespace Purchase_Sales_API.Controllers
             else
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
 
-
+            timer.Stop();
+            Console.Write("timing:" + timer.ElapsedMilliseconds);
             return Ok($"{addedSales} Sales added");
+
         }
     }
 }
