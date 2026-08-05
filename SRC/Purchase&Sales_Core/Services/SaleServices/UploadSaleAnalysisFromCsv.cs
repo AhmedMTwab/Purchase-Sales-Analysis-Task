@@ -12,21 +12,74 @@ using Purchase_Sales_Core.DTOs.ProductDTO;
 using Purchase_Sales_Core.DTOs.SaleDTO;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
 using Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions;
+using Purchase_Sales_Domain.Models;
 
 namespace Purchase_Sales_Core.Services.SaleServices
 {
     public class UploadSaleAnalysisFromCsv(ISaleAdder _saleAdder, IGetAllProducts _getAllProducts, IProductAdder _productAdder) : IUploadSaleAnalysisFromCsv
     {
-        const int batchSize = 20000;
-        public async Task<int> UploadSaleData(IFormFile saleFile)
+        const int batchSize = constants.BatchSize;
+        public async Task<int> UploadSaleData(SalesFileMetadataDTO saleFileDTO)
         {
             int insertedSales = 0;
+            int totalSalesAdded = 0;
             var allProducts = await _getAllProducts.GetProductsNamesAsync();
             var allProductNames = new HashSet<string>(allProducts, StringComparer.OrdinalIgnoreCase);
-            var addedProducts = new Dictionary<string,ProductAddDTO>();
-            var salesToAdd = new List<SaleAddDTO>();
+            var addedProducts = new Dictionary<string, ProductAddDTO>();
+            var salesToAdd = await ReadSales(saleFileDTO);
+            var batchOfSales = new List<SaleAddDTO>();
+            foreach (var sale in salesToAdd)
+            {
+                AddNewProductToAddList(sale.productName, allProductNames, addedProducts);
+                batchOfSales.Add(sale);
+                totalSalesAdded++;
+                insertedSales++;
+                if (insertedSales >= batchSize)
+                {
+                    await AddProductsToDB(addedProducts);
+                    await AddSalesToDB(batchOfSales);
+                    insertedSales = 0;
+                }
+            }
+            await AddProductsToDB(addedProducts);
+            await AddSalesToDB(batchOfSales);
 
-            using (var stream = saleFile.OpenReadStream())
+            return totalSalesAdded;
+        }
+        private async Task AddProductsToDB(Dictionary<string, ProductAddDTO>? addedProducts)
+        {
+            if (addedProducts.Any())
+            {
+                await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
+                addedProducts.Clear();
+            }
+        }
+        private async Task AddSalesToDB(List<SaleAddDTO>? salesToAdd)
+        {
+            if (salesToAdd.Any())
+            {
+                await _saleAdder.AddPulkOfSales(salesToAdd);
+                salesToAdd.Clear();
+            }
+        }
+        private void AddNewProductToAddList(string productName, HashSet<string>? allProductNames, Dictionary<string, ProductAddDTO>? addedProducts)
+        {
+            if (!allProductNames.Contains(productName) && !addedProducts.ContainsKey(productName))
+            {
+                var newProduct = new ProductAddDTO
+                {
+                    name = productName,
+                    purchasePrice = 0,
+                    updatedAt = DateTime.Now
+                };
+                addedProducts.Add(newProduct.name, newProduct);
+                allProductNames.Add(productName);
+            }
+        }
+        private async Task<List<SaleAddDTO>> ReadSales(SalesFileMetadataDTO saleFileDTO)
+        {
+            List<SaleAddDTO> salesToAdd = new List<SaleAddDTO>();
+            using (var stream = saleFileDTO.salesFile.OpenReadStream())
             using (var reader = new StreamReader(stream))
             using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -39,55 +92,20 @@ namespace Purchase_Sales_Core.Services.SaleServices
                 csv.ReadHeader();
                 while (await csv.ReadAsync())
                 {
-                    var productName = csv.GetField<string>("اسم الصنف")?.Trim();
+                    var productName = csv.GetField<string>(saleFileDTO.productNameHeader)?.Trim();
                     if (string.IsNullOrEmpty(productName))
                         continue;
-
-                    if (!allProductNames.Contains(productName) && !addedProducts.ContainsKey(productName))
-                    {
-                        var newProduct = new ProductAddDTO
-                        {
-                            name = productName,
-                            purchasePrice = 0,
-                            updatedAt = DateTime.Now
-                        };
-                        addedProducts.Add(newProduct.name,newProduct);
-                        allProductNames.Add(productName);
-                    }
-
-                    var quantity = csv.TryGetField<decimal>("صافى كمية مبيعات", out var q) ? q : 0;
-                    var price = csv.TryGetField<decimal>("صافى قيمة مبيعات", out var p) ? p : 0;
-
+                    var quantity = csv.TryGetField<decimal>(saleFileDTO.quantityHeader, out var q) ? q : 0;
+                    var price = csv.TryGetField<decimal>(saleFileDTO.priceHeader, out var p) ? p : 0;
                     salesToAdd.Add(new SaleAddDTO
                     {
                         productName = productName,
                         quantity = (int)quantity,
                         price = price
                     });
-
-                    insertedSales++;
-
-                    if (salesToAdd.Count >= batchSize)
-                    {
-                        if (addedProducts.Any())
-                        {
-                            await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
-                            addedProducts.Clear();
-                        }
-                        await _saleAdder.AddPulkOfSales(salesToAdd);
-                        salesToAdd.Clear();
-                    }
-                }
-                if (addedProducts.Any())
-                {
-                    await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
-                }
-                if (salesToAdd.Any())
-                {
-                    await _saleAdder.AddPulkOfSales(salesToAdd);
                 }
             }
-            return insertedSales;
+            return salesToAdd;
         }
     }
 }
