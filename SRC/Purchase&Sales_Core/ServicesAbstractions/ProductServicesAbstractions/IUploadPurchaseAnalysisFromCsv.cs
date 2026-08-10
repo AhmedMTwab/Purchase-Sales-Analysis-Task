@@ -9,7 +9,7 @@ namespace Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions
 {
     public interface IUploadPurchaseAnalysisFromCsv
     {
-        Task<int> UploadPurchaseData(IFormFile purchaseFile);
+        Task<int> UploadPurchaseData(PurchaseFileMetadataDTO purchaseFileDTO);
 
     }
 }
