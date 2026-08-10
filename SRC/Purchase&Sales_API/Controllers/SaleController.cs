@@ -12,7 +12,7 @@ namespace Purchase_Sales_API.Controllers
     public class SaleController(IUploadSaleAnalysisFromExcel _uploadSaleAnalysisFromExcel, IUploadSaleAnalysisFromCsv _uploadSaleAnalysisFromCsv) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> UploadSales(SalesFileMetadataDTO salesFileDTO)
+        public async Task<IActionResult> UploadSales([FromForm] SalesFileMetadataDTO salesFileDTO)
         {
             var timer = Stopwatch.StartNew();
             if (salesFileDTO.salesFile == null || salesFileDTO.salesFile.Length == 0)

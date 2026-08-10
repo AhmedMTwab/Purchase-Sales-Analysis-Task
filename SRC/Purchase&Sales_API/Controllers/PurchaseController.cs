@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Purchase_Sales_Core;
 using Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions;
 
 namespace Purchase_Sales_API.Controllers
 {
     [Route("api/upload/[controller]")]
     [ApiController]
-    public class PurchaseController(IUploadPurchaseAnalysisFromExcel _uploadPurchaseAnalysisFromExcel,IUploadPurchaseAnalysisFromCsv _uploadPurchaseAnalysisFromCsv) : ControllerBase
+    public class PurchaseController(IUploadPurchaseAnalysisFromExcel _uploadPurchaseAnalysisFromExcel, IUploadPurchaseAnalysisFromCsv _uploadPurchaseAnalysisFromCsv) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> UploadPurchases(IFormFile purchaseFile)
+        public async Task<IActionResult> UploadPurchases([FromForm] PurchaseFileMetadataDTO purchaseFileDTO)
         {
-            if (purchaseFile == null || purchaseFile.Length == 0)
+            if (purchaseFileDTO.purchaseFile == null || purchaseFileDTO.purchaseFile.Length == 0)
             {
                 return BadRequest("Purchase file is Missed or Empty");
             }
             int addedProducts = 0;
-            
-            if(Path.GetExtension(purchaseFile.FileName).Equals(".csv", StringComparison.OrdinalIgnoreCase))
-                 addedProducts = await _uploadPurchaseAnalysisFromCsv.UploadPurchaseData(purchaseFile);
 
-            else if(Path.GetExtension(purchaseFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                 addedProducts = await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFile);
+            if (Path.GetExtension(purchaseFileDTO.purchaseFile.FileName).Equals(".csv", StringComparison.OrdinalIgnoreCase))
+                addedProducts = await _uploadPurchaseAnalysisFromCsv.UploadPurchaseData(purchaseFileDTO);
+
+            else if (Path.GetExtension(purchaseFileDTO.purchaseFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                addedProducts = await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFileDTO.purchaseFile);
             else
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
 
