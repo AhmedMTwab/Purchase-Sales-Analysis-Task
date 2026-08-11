@@ -88,7 +88,12 @@ namespace Purchase_Sales_Core.Services.SaleServices
                 MissingFieldFound = null,
             }))
             {
-                csv.Read();
+                int headerRow = saleFileDTO.headerRow;
+                for (int i = 1; i < headerRow; i++)
+                {
+                    await csv.ReadAsync();
+                }
+                await csv.ReadAsync();
                 csv.ReadHeader();
                 while (await csv.ReadAsync())
                 {
