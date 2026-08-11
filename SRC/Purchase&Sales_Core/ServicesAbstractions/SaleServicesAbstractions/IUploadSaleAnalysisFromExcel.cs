@@ -9,7 +9,7 @@ namespace Purchase_Sales_Core.ServicesAbstractions.SaleServicesAbstractions
 {
     public interface IUploadSaleAnalysisFromExcel
     {
-        public Task<int> UploadSaleData(IFormFile saleFile);
+        public Task<int> UploadSaleData(SalesFileMetadataDTO saleFileDTO);
 
     }
 }

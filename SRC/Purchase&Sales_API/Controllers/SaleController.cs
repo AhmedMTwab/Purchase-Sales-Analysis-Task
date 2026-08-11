@@ -24,7 +24,7 @@ namespace Purchase_Sales_API.Controllers
             if (Path.GetExtension(salesFileDTO.salesFile.FileName).Equals(".csv", StringComparison.OrdinalIgnoreCase))
                 addedSales = await _uploadSaleAnalysisFromCsv.UploadSaleData(salesFileDTO);
             else if (Path.GetExtension(salesFileDTO.salesFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                addedSales = await _uploadSaleAnalysisFromExcel.UploadSaleData(salesFileDTO.salesFile);
+                addedSales = await _uploadSaleAnalysisFromExcel.UploadSaleData(salesFileDTO);
             else
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
 
