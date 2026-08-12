@@ -74,27 +74,27 @@ namespace Purchase_Sales_Core.Services.SaleServices
             {
                 ExcelWorksheet worksheet = excelpackage.Workbook.Worksheets[0];
                 int numberOfRows = worksheet.Dimension.Rows;
-
+                var headers = ReadWorksheetHeader(worksheet, saleFileDTO.headerRow);
                 for (int row = saleFileDTO.headerRow + 1; row <= numberOfRows; row++)
                 {
                     SaleAddDTO rowSale = new SaleAddDTO();
-                    string? cellValue = worksheet.GetValue(row, 9).ToString();
+                    string? cellValue = worksheet.GetValue(row, headers[saleFileDTO.productNameHeader]).ToString();
                     if (!string.IsNullOrEmpty(cellValue))
                     {
-                        string productName = worksheet.GetValue<string>(row, 11);
+                        string productName = worksheet.GetValue<string>(row, headers[saleFileDTO.productNameHeader]);
                         var trimedName = productName.Trim();
 
 
                         rowSale.productName = trimedName;
 
-                        var quantityCell = worksheet.Cells[row, 12].Value;
+                        var quantityCell = worksheet.Cells[row, headers[saleFileDTO.quantityHeader]].Value;
                         if (!decimal.TryParse(quantityCell.ToString(), out decimal quantity))
                         {
                             continue;
                         }
 
                         rowSale.quantity = (int)quantity;
-                        var priceCell = worksheet.Cells[row, 13].Value;
+                        var priceCell = worksheet.Cells[row, headers[saleFileDTO.priceHeader]].Value;
                         if (!decimal.TryParse(priceCell.ToString(), out decimal price))
                         {
                             continue;
