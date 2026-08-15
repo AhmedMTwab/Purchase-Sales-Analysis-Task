@@ -13,7 +13,7 @@ using Purchase_Sales_Domain.Models;
 
 namespace Purchase_Sales_Core.Services.ProductServices
 {
-    public class UploadPurchaseAnalysisFromCsv(IProductAdder _productAdder, IGetAllProducts _getAllProducts) : IUploadPurchaseAnalysisFromCsv
+    public class UploadPurchaseAnalysisFromCsv(IProductAdder _productAdder, IGetAllProducts _getAllProducts, IGetExistingProductByName _getProductByName, IProductUpdater _productUpdater) : IUploadPurchaseAnalysisFromCsv
     {
         const int batchSize = constants.BatchSize;
         public async Task<int> UploadPurchaseData(PurchaseFileMetadataDTO purchaseFileDTO)
@@ -28,16 +28,22 @@ namespace Purchase_Sales_Core.Services.ProductServices
                 );
 
             Dictionary<string, ProductAddDTO> addedProducts = new Dictionary<string, ProductAddDTO>();
+            Dictionary<string, Product> productsToUpdate = new Dictionary<string, Product>();
+
             var purchaseList = await ReadPurchase(purchaseFileDTO);
             foreach (var purchase in purchaseList)
             {
+                await AddUpdatedProductToUpdateList(purchase, allProductsNames, productsToUpdate);
                 AddNewProductToAddList(purchase, allProductsNames, addedProducts, ref insertedProducts);
 
-
                 if (addedProducts.Count >= batchSize)
+                {
                     await AddProductsToDB(addedProducts);
+                    await UpdateProductsInDB(productsToUpdate);
+                }
             }
             await AddProductsToDB(addedProducts);
+            await UpdateProductsInDB(productsToUpdate);
 
             return insertedProducts;
 
@@ -88,17 +94,40 @@ namespace Purchase_Sales_Core.Services.ProductServices
         }
         private void AddNewProductToAddList(ProductAddDTO product, HashSet<string>? allProductNames, Dictionary<string, ProductAddDTO>? addedProducts, ref int insertedProducts)
         {
-            if (!allProductNames.Contains(product.name) && !addedProducts.ContainsKey(product.name))
+            if (!allProductNames.Contains(product.name))
             {
-                var newProduct = new ProductAddDTO
+                if (!addedProducts.ContainsKey(product.name))
                 {
-                    name = product.name,
-                    purchasePrice = product.purchasePrice,
-                    updatedAt = DateTime.Now
-                };
-                addedProducts.Add(newProduct.name, newProduct);
-                allProductNames.Add(product.name);
-                insertedProducts++;
+                    var newProduct = new ProductAddDTO
+                    {
+                        name = product.name,
+                        purchasePrice = product.purchasePrice,
+                        updatedAt = DateTime.Now
+                    };
+                    addedProducts.Add(newProduct.name, newProduct);
+                    insertedProducts++;
+                }
+                else
+                {
+                    addedProducts[product.name].purchasePrice += product.purchasePrice;
+                }
+            }
+        }
+
+        private async Task AddUpdatedProductToUpdateList(ProductAddDTO product, HashSet<string>? allProductNames, Dictionary<string, Product> productsToUpdate)
+        {
+            if (allProductNames.Contains(product.name))
+            {
+                if (!productsToUpdate.ContainsKey(product.name))
+                {
+                    Product existedProduct = await _getProductByName.GetProductByName(product.name);
+                    existedProduct.purchasePrice += product.purchasePrice;
+                    productsToUpdate.Add(product.name, existedProduct);
+                }
+                else
+                {
+                    productsToUpdate[product.name].purchasePrice += product.purchasePrice;
+                }
             }
         }
         private async Task AddProductsToDB(Dictionary<string, ProductAddDTO>? addedProducts)
@@ -107,6 +136,14 @@ namespace Purchase_Sales_Core.Services.ProductServices
             {
                 await _productAdder.AddPulkOfProducts(addedProducts.Values.ToList());
                 addedProducts.Clear();
+            }
+        }
+        private async Task UpdateProductsInDB(Dictionary<string, Product> productsToUpdate)
+        {
+            if (productsToUpdate.Any())
+            {
+                await _productUpdater.UpdatePulkOfProduct(productsToUpdate.Values.ToList());
+                productsToUpdate.Clear();
             }
         }
     }
