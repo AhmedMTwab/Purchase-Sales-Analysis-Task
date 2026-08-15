@@ -23,7 +23,7 @@ namespace Purchase_Sales_API.Controllers
                 addedProducts = await _uploadPurchaseAnalysisFromCsv.UploadPurchaseData(purchaseFileDTO);
 
             else if (Path.GetExtension(purchaseFileDTO.purchaseFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                addedProducts = await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFileDTO.purchaseFile);
+                addedProducts = await _uploadPurchaseAnalysisFromExcel.UploadPurchaseData(purchaseFileDTO);
             else
                 return BadRequest("Wrong File Format ,File Must be in CSV or xlsx Format");
 
