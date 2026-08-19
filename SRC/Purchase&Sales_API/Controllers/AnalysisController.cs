@@ -19,9 +19,9 @@ namespace Purchase_Sales_API.Controllers
             return BadRequest("There is no Products");
         }
         [HttpGet("/GetDeadstock")]
-        public async Task<ActionResult<List<string>>> GetDeadstock()
+        public async Task<ActionResult<List<string>>> GetDeadstock([FromQuery] int pageNumber=1, [FromQuery] int pageSize = 5)
         {
-            var deadstockProducts=await _getDeadstockProducts.GetDeadstockProductsAsync();
+            var deadstockProducts=await _getDeadstockProducts.GetDeadstockProductsAsync(Math.Max(1, pageNumber), Math.Clamp(pageSize, 1, 50));
             if (deadstockProducts != null)
                 return Ok(deadstockProducts);
             return BadRequest("There is no Deadstock Products");

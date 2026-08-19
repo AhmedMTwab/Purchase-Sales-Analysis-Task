@@ -61,12 +61,14 @@ namespace Purchase_Sales_Infrastructure.Repositories
                 .SumAsync(s => (decimal?)s.price)??0;
             return products;
         }
-        public async Task<List<string>> GetDeadstockProducts()
+        public async Task<List<string>> GetDeadstockProducts(int pageNumber, int pageSize)
         {
 
             var products = await db.products
                             .Where(p => !p.sales.Any())
                             .Select(p => p.name)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
                             .ToListAsync();
             return products;
         }

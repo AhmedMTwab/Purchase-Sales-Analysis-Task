@@ -10,9 +10,9 @@ namespace Purchase_Sales_Core.Services.ProductServices
 {
     public class GetDeadstockProducts(IProductRepo _productRepo) : IGetDeadstockProducts
     {
-        public async Task<List<string>> GetDeadstockProductsAsync()
+        public async Task<List<string>> GetDeadstockProductsAsync(int pageNumber, int pageSize)
         {
-          return await _productRepo.GetDeadstockProducts();
+          return await _productRepo.GetDeadstockProducts(pageNumber, pageSize);
         }
     }
 }

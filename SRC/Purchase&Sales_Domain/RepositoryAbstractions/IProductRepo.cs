@@ -14,7 +14,7 @@ namespace Purchase_Sales_Domain.RepositoryAbstractions
         public  Task<List<string>> GetAllProductsNames();
         public Task<List<Product>> GetListOfProductsByName(string Name);
 
-        public Task<List<string>> GetDeadstockProducts();
+        public Task<List<string>> GetDeadstockProducts(int pageNumber, int pageSize);
 
         public Task<List<Product>> GetAllProductsWithSales();
         public Task<decimal> GetProductTotalSales(string productName);
