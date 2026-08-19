@@ -57,16 +57,19 @@ namespace Purchase_Sales_Infrastructure.Repositories
         public async Task<decimal> GetProductTotalSales(string productName)
         {
 
-            var products = await db.sales.Where(s => s.productName == productName)
+            var products = await db.sales.Where(s => s.productName == productName).AsNoTracking()
                 .SumAsync(s => (decimal?)s.price)??0;
             return products;
         }
-        public async Task<List<string>> GetDeadstockProducts()
+        public async Task<List<string>> GetDeadstockProducts(int pageNumber, int pageSize)
         {
 
             var products = await db.products
                             .Where(p => !p.sales.Any())
                             .Select(p => p.name)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .AsNoTracking()
                             .ToListAsync();
             return products;
         }
@@ -87,6 +90,7 @@ namespace Purchase_Sales_Infrastructure.Repositories
         {
             var matchedProducts = await db.products
                                         .Where(p => p.name != null && p.name.Contains(Name))
+                                        .AsNoTracking()
                                         .ToListAsync();
             return matchedProducts;
         }

@@ -8,6 +8,6 @@ namespace Purchase_Sales_Core.ServicesAbstractions.ProductServicesAbstractions
 {
     public interface IGetDeadstockProducts
     {
-        public Task<List<string>> GetDeadstockProductsAsync();
+        public Task<List<string>> GetDeadstockProductsAsync(int pageNumber, int pageSize);
     }
 }
